@@ -278,6 +278,16 @@
          * 当如果出现这个场景，先弹框，然后点击弹框上按钮，再toast提示，此时toast会添加到Alert所在的window上去，而alert此时点了按钮，即将被回收，此时的toast可能就是一闪而过
          */
         UIWindow *tempWindow = [UIApplication sharedApplication].delegate.window;
+        
+        // 先移除旧的View
+        for (UIView *tempView in tempWindow.subviews)
+        {
+            if ([tempView isKindOfClass:[self class]])
+            {
+                [tempView removeFromSuperview];
+            }
+        }
+        // 再把当前View加上去
         [tempWindow addSubview:self];
         
         [UIView animateWithDuration:0.5f
