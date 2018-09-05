@@ -63,10 +63,16 @@
 }
 - (IBAction)show:(id)sender {
     
-    JWToast *toast = [[JWToast alloc] initWithMessage:@"Toast 测试"];
+//    JWToast *toast = [[JWToast alloc] initWithMessage:@"Toast 测试"];
+//    toast.position = self.position;
+//    toast.type = self.type;
+//    [toast show];
+    
+    JWToast *toast = [[JWToast alloc] initWithImage:[UIImage imageNamed:@"icon_toast_success"] message:@"Toast 测试"];
     toast.position = self.position;
     toast.type = self.type;
     [toast show];
+
 }
 
 - (void)didReceiveMemoryWarning {

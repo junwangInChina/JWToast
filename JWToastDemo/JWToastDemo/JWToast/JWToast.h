@@ -34,9 +34,11 @@ typedef NS_ENUM(NSUInteger, JWToastType) {
 
 - (instancetype)initWithMessage:(NSString *)message;
 
+- (instancetype)initWithImage:(UIImage *)image message:(NSString *)message;
+
 - (void)show;
 
-- (void)show:(void(^)())complete;
+- (void)show:(void(^)(void))complete;
 
 - (void)dismiss;
 

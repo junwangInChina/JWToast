@@ -16,14 +16,16 @@
 
 @interface JWToast ()
 
+@property (nonatomic, strong) UIImage *alertImage;
 @property (nonatomic, copy) NSString *message;
 @property (nonatomic, strong) NSMutableArray *toastArray;
 @property (nonatomic, strong) UILabel *messageLabel;
+@property (nonatomic, strong) UIImageView *alertImageView;
 @property (nonatomic, assign) CGSize messageSize;
 @property (nonatomic, assign) CGRect toastShowFrame;
 @property (nonatomic, assign) CGRect toastHideFrame;
 
-@property (nonatomic, copy) void(^complete)();
+@property (nonatomic, copy) void(^complete)(void);
 
 @end
 
@@ -53,22 +55,41 @@
     return self;
 }
 
+- (instancetype)initWithImage:(UIImage *)image message:(NSString *)message
+{
+    self = [super init];
+    if (self)
+    {
+        self.alertImage = image;
+        self.message = message;
+        
+        NSAssert(message.length > 0, @"提示内容不能为空");
+        
+        [self configDefault];
+    }
+    return self;
+}
+
 - (void)configDefault
 {
     self.position = JWToastPositionCenter;
     self.type = JWToastAutoCalculation;
-    self.bgColor = [UIColor blackColor];
+    self.bgColor = self.alertImage ? [[UIColor blackColor] colorWithAlphaComponent:0.5] :  [UIColor blackColor];
     self.titleColor = [UIColor whiteColor];
     self.autoDismiss = YES;
-    self.duration = 1;
+    self.duration = 2;
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
-    self.messageLabel.frame = CGRectMake(JW_HORIZONTAL_PADDING,
-                                         JW_VERTICAL_PADDING,
+    if (self.alertImage)
+    {
+        self.alertImageView.frame = CGRectMake((CGRectGetWidth(self.frame) - 50)/2.0, 30, 50, 50);
+    }
+    self.messageLabel.frame = CGRectMake((self.alertImage ? (CGRectGetWidth(self.frame) - self.messageSize.width)/2.0 : JW_HORIZONTAL_PADDING),
+                                         (self.alertImage ? CGRectGetMaxY(self.alertImageView.frame) + 30 : JW_VERTICAL_PADDING),
                                          self.messageSize.width,
                                          self.messageSize.height);
     [self configDatas];
@@ -84,9 +105,21 @@
         _messageLabel.textAlignment = NSTextAlignmentLeft;
         _messageLabel.numberOfLines = 0;
         _messageLabel.font = [UIFont systemFontOfSize:15.f];
+        _messageLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:_messageLabel];
     }
     return _messageLabel;
+}
+
+- (UIImageView *)alertImageView
+{
+    if (!_alertImageView)
+    {
+        self.alertImageView = [UIImageView new];
+        _alertImageView.backgroundColor = [UIColor clearColor];
+        [self addSubview:_alertImageView];
+    }
+    return _alertImageView;
 }
 
 - (NSMutableArray *)toastArray
@@ -140,7 +173,7 @@
 
 - (void)calculationSize
 {
-    CGFloat temp_message_max_width = (self.type == JWToastEqualWidthToScreen) ? JW_SCREEN_WIDTH : (JW_SCREEN_WIDTH - JW_HORIZONTAL_PADDING * 2 - JW_HORIZONTAL_PADDING * 2);
+    CGFloat temp_message_max_width = self.alertImage ? (124 - 20) : (self.type == JWToastEqualWidthToScreen) ? JW_SCREEN_WIDTH : (JW_SCREEN_WIDTH - JW_HORIZONTAL_PADDING * 2 - JW_HORIZONTAL_PADDING * 2);
     self.messageSize = [self sizeFromString:self.message
                                        font:self.messageLabel.font
                                    maxWidth:temp_message_max_width];
@@ -207,6 +240,11 @@
     
     self.toastShowFrame = CGRectMake(temp_toast_show_x, temp_toast_show_y, temp_toast_w, temp_toast_h);
     self.toastHideFrame = CGRectMake(temp_toast_hide_x, temp_toast_hide_y, temp_toast_w, temp_toast_h);
+    if (self.alertImage)
+    {
+        self.toastShowFrame = CGRectMake((JW_SCREEN_WIDTH - 124)/2.0, 238, 124, 120 + self.messageSize.height);
+        self.toastHideFrame = CGRectMake((JW_SCREEN_WIDTH - 124)/2.0, 0, 124, 120 + self.messageSize.height);
+    }
 }
 
 - (void)configDatas
@@ -214,6 +252,10 @@
     self.backgroundColor = self.bgColor;
     self.messageLabel.textColor = self.titleColor;
     self.messageLabel.text = self.message;
+    if (self.alertImage)
+    {
+        self.alertImageView.image = self.alertImage;
+    }
 }
 
 - (void)configSwipeGesture
@@ -313,7 +355,7 @@
     }
 }
 
-- (void)show:(void (^)())complete
+- (void)show:(void (^)(void))complete
 {
     self.complete = complete;
     [self show];

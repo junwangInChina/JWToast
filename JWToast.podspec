@@ -2,8 +2,8 @@
 Pod::Spec.new do |s|
 
   s.name         = "JWToast"
-  s.version      = "0.0.1"
-  s.summary      = "仿Android的Toast控件."
+  s.version      = "0.0.5"
+  s.summary      = "仿Android的Toast控件. 多个同时弹出，会重叠的bug。"
 
   #主页
   s.homepage     = "https://github.com/junwangInChina/JWToast"
@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   #支持版本
   s.platform     = :ios, "7.0"
   #项目地址，版本
-  s.source       = { :git => "https://github.com/junwangInChina/JWToast.git", :tag => "0.0.1" }
+  s.source       = { :git => "https://github.com/junwangInChina/JWToast.git", :tag => s.version }
 
   #库文件路径
   s.source_files  = "JWToastDemo/JWToastDemo/JWToast/**/*.{h,m}"
