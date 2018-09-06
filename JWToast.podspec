@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "JWToast"
-  s.version      = "0.0.5"
+  s.version      = "0.0.6"
   s.summary      = "仿Android的Toast控件. 多个同时弹出，会重叠的bug。"
 
   #主页

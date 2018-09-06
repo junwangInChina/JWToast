@@ -89,7 +89,7 @@
         self.alertImageView.frame = CGRectMake((CGRectGetWidth(self.frame) - 50)/2.0, 30, 50, 50);
     }
     self.messageLabel.frame = CGRectMake((self.alertImage ? (CGRectGetWidth(self.frame) - self.messageSize.width)/2.0 : JW_HORIZONTAL_PADDING),
-                                         (self.alertImage ? CGRectGetMaxY(self.alertImageView.frame) + 30 : JW_VERTICAL_PADDING),
+                                         (self.alertImage ? CGRectGetMaxY(self.alertImageView.frame) + 20 : JW_VERTICAL_PADDING),
                                          self.messageSize.width,
                                          self.messageSize.height);
     [self configDatas];
@@ -242,8 +242,8 @@
     self.toastHideFrame = CGRectMake(temp_toast_hide_x, temp_toast_hide_y, temp_toast_w, temp_toast_h);
     if (self.alertImage)
     {
-        self.toastShowFrame = CGRectMake((JW_SCREEN_WIDTH - 124)/2.0, 238, 124, 120 + self.messageSize.height);
-        self.toastHideFrame = CGRectMake((JW_SCREEN_WIDTH - 124)/2.0, 0, 124, 120 + self.messageSize.height);
+        self.toastShowFrame = CGRectMake((JW_SCREEN_WIDTH - 130)/2.0, (JW_SCREEN_HEIGHT - (120 + self.messageSize.height))/2.0, 130, 120 + self.messageSize.height);
+        self.toastHideFrame = CGRectMake((JW_SCREEN_WIDTH - 130)/2.0, 0, 130, 120 + self.messageSize.height);
     }
 }
 
